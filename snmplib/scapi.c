@@ -485,8 +485,8 @@ sc_hash(const oid * hashtype, size_t hashtypelen, const u_char * buf,
     }
 
 /** initialize the pointer */
-#ifdef HAVE_EVP_MD_CTX_CREATE
-    cptr = EVP_MD_CTX_create();
+#ifdef HAVE_EVP_MD_CTX_NEW
+    cptr = EVP_MD_CTX_new();
 #else
     cptr = malloc(sizeof(*cptr));
 #if defined(OLD_DES)
@@ -503,8 +503,8 @@ sc_hash(const oid * hashtype, size_t hashtypelen, const u_char * buf,
 /** do the final pass */
     EVP_DigestFinal(cptr, MAC, &tmp_len);
     *MAC_len = tmp_len;
-#ifdef HAVE_EVP_MD_CTX_DESTROY
-    EVP_MD_CTX_destroy(cptr);
+#ifdef HAVE_EVP_MD_CTX_FREE
+    EVP_MD_CTX_free(cptr);
 #else
 #if !defined(OLD_DES)
     EVP_MD_CTX_cleanup(cptr);
